@@ -2,7 +2,7 @@
   "name": "piotrpress/wordpress-hooks",
   "type": "library",
   "license": "GPL-3.0",
-  "description": "The library allows using PHP Attributes (introduced in PHP version 8) to automagically add WordPress Hooks (Filters and Actions) to objects' methods.",
+  "description": "The library allows using PHP Attributes (introduced in PHP version 8.0) and/or PHP Annotations (PHP Doc Comments) and/or objects' methods names prefixed by 'filter_' or 'action_' to automagically add WordPress Hooks (Filters and Actions) to objects' methods.",
   "homepage": "https://PiotrPress",
   "authors": [
     {
@@ -11,10 +11,10 @@
     }
   ],
   "keywords": [
-    "wordpress", "wp", "hooks", "hook", "filters", "filter", "actions", "action", "attributes", "attribute", "php8", "php 8.0", "php attributes", "php attribute"
+    "wordpress", "wp", "hooks", "hook", "filters", "filter", "actions", "action", "attributes", "attribute", "php8", "php 8.0", "php attributes", "php attribute", "annotations", "annotation", "php annotations", "php annotation", "phpdoc", "php doc", "php doc comments", "php doc block comments"
   ],
   "require": {
-    "php": ">=8.0"
+    "php": "^7.4"
   },
   "autoload": {
     "psr-4": {
