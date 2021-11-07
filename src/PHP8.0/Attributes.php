@@ -1,18 +1,19 @@
-<?php
-
-declare(strict_types=1);
+<?php declare( strict_types = 1 );
 
 namespace PiotrPress\WordPress\Hooks;
 
 use ReflectionClass;
 use ReflectionMethod;
 
+use function defined;
+use function trait_exists;
+
 use function array_merge;
 
 defined( 'ABSPATH' ) or exit;
 
-if ( ! trait_exists( __NAMESPACE__ . '\Hooks' ) ) {
-    trait Hooks {
+if ( ! trait_exists( __NAMESPACE__ . '\Attributes' ) ) {
+    trait Attributes {
         public function add_hooks() : void {
             $object  = new ReflectionClass( $this );
             $methods = $object->getMethods( ReflectionMethod::IS_PUBLIC );

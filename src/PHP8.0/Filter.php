@@ -1,10 +1,11 @@
-<?php
-
-declare(strict_types=1);
+<?php declare( strict_types = 1 );
 
 namespace PiotrPress\WordPress\Hooks;
 
 use Attribute;
+
+use function defined;
+use function class_exists;
 
 use function add_filter;
 
