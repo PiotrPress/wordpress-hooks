@@ -26,8 +26,8 @@ require __DIR__ . '/vendor/autoload.php';
 ### Functions
 
 ```php
-Hooks::add( object $object = null, string $callback = '' ) : void
-Hooks::remove( object $object = null, string $callback = '' ) : void
+Hooks::add( object $object = null, string $callback = '', PiotrPress\CacheInterface $cache = null ) : void
+Hooks::remove( object $object = null, string $callback = '', PiotrPress\CacheInterface $cache = null ) : void
 ```
 
 ## Examples
@@ -42,9 +42,8 @@ use PiotrPress\WordPress\Hooks\Action;
 use PiotrPress\WordPress\Hooks\Filter;
 
 class Example {
-    public function __construct() {
+    public function add_hooks() {
         Hooks::add( $this );
-        Hooks::remove( $this );
     }
 
     #[ Action( 'init' ) ]
@@ -58,7 +57,10 @@ class Example {
     }
 }
 
-new Example();
+$example = new Example();
+$example->add_hooks();
+
+Hooks::remove( $example );
 ```
 
 This is an equivalent to:
@@ -73,9 +75,11 @@ remove_action( 'init', [ $example, 'example_init' ] );
 remove_filter( 'the_title', [ $example, 'example_the_title' ], 1, 2 );
 ```
 
+**Note:** `Hooks::add/remove()` methods can be called from the method, or even outside the object.
+
 ### Hooks::add/remove( $object, $callback )
 
-If `object` and `callback` arguments are passed, then only hook for this method is added or removed.
+If `object` and `callback` arguments are passed, then only hooks for this method are added or removed.
 
 ```php
 use PiotrPress\WordPress\Hooks;
@@ -83,12 +87,9 @@ use PiotrPress\WordPress\Hooks\Action;
 use PiotrPress\WordPress\Hooks\Filter;
 
 class Example {
-    public function __construct() {
+    public function add_hooks() {
         Hooks::add( $this, 'example_init' );
         Hooks::add( $this, 'example_the_title' );
-        
-        Hooks::remove( $this, 'example_init' );
-        Hooks::remove( $this, 'example_the_title' );
     }
 
     #[ Action( 'init' ) ]
@@ -102,7 +103,11 @@ class Example {
     }
 }
 
-new Example();
+$example = new Example();
+$example->add_hooks();
+
+Hooks::remove( $example, 'example_init' );
+Hooks::remove( $example, 'example_the_title' );
 ```
 
 This is an equivalent to:
@@ -119,7 +124,7 @@ remove_filter( 'the_title', [ $example, 'example_the_title' ], 1, 2 );
 
 ### Hooks::add/remove( callback: $callback )
 
-If `object` argument is omitted and `callback` is passed, then only hook for this function is added or removed.
+If `object` argument is omitted and `callback` is passed, then only hooks for this function are added or removed.
 
 ```php
 use PiotrPress\WordPress\Hooks;
@@ -153,7 +158,51 @@ remove_action( 'init', 'example_init' );
 remove_filter( 'the_title', 'example_the_title', 1, 2 );
 ```
 
-**Note:** `Hooks::add/remove()` methods can be called from in or out of the constructor method, or even outside the object.
+## Cache
+
+Optionally, you can pass a cache object, which must implement [PiotrPress\CacheInterface](https://github.com/PiotrPress/cacher/blob/master/src/CacheInterface.php) interface, as a third `cache` argument to `Hooks::add/remove()` methods.
+
+This will cache the result of `Hooks::get()` method, which provides a list of hooks for a given object, method or function using [Reflection API](https://www.php.net/manual/en/book.reflection.php), so caching its result can significantly improve the performance.
+
+### Example
+
+```php
+use PiotrPress\Cacher;
+use PiotrPress\WordPress\Hooks;
+use PiotrPress\WordPress\Hooks\Action;
+use PiotrPress\WordPress\Hooks\Filter;
+
+class Example {
+    #[ Action( 'init' ) ]
+    public function example_init() : void {
+        // do something
+    }
+
+    #[ Filter( 'the_title', 1 ) ]
+    public function example_the_title( string $post_title, int $post_id ) : string {
+        // do something
+    }
+}
+
+$example = new Example();
+$cache = new Cacher( '.hooks' );
+
+Hooks::add( object: $example, cache: $cache );
+Hooks::remove( object: $example, cache: $cache );
+```
+
+**Note:** You can use simple file-based cache, which is provided by [PiotrPress\Cacher](https://github.com/PiotrPress/cacher) library distributed with this library.
+
+## Kudos
+
+Inspirations, feedback, ideas and feature requests provided by:
+
+- [Jakub Mikita](https://github.com/jakubmikita)
+- [Sebastian Pisula](https://github.com/sebastianpisula)
+- [Mateusz Gbiorczyk](https://github.com/gbiorczyk)
+- [Krzysztof Grabania](https://github.com/Dartui)
+- [Dominik Kawula](https://github.com/domkawula)
+- [Jacek Sławiński](https://github.com/jacekslawinski)
 
 ## Requirements
 
