@@ -14,16 +14,14 @@
     "wordpress", "wp", "hooks", "hook", "filters", "filter", "actions", "action", "attributes", "attribute", "php8", "php 8.0", "php attributes", "php attribute"
   ],
   "require": {
-    "php": ">=8.0",
-    "piotrpress/cacher": "^1.0"
+    "php": ">=7.4",
+    "piotrpress/cacher": "^1.2"
   },
   "autoload": {
     "psr-4": {
       "PiotrPress\\WordPress\\": "src/",
       "PiotrPress\\WordPress\\Hooks\\": "src/"
     },
-    "classmap": [
-      "src"
-    ]
+    "classmap": [ "src" ]
   }
 }

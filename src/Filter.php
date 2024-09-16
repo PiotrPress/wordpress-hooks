@@ -7,7 +7,13 @@ namespace PiotrPress\WordPress\Hooks;
 if ( ! \class_exists( __NAMESPACE__ . '\Filter' ) ) {
     #[ \Attribute( \Attribute::TARGET_FUNCTION | \Attribute::TARGET_METHOD | \Attribute::IS_REPEATABLE ) ]
     class Filter {
-        public function __construct( private string $name, private int $priority = 10 ) {}
+        private string $name;
+        private int $priority;
+
+        public function __construct( string $name, int $priority = 10 ) {
+            $this->name = $name;
+            $this->priority = $priority;
+        }
 
         public function add( callable $callback, int $count = 1 ) : bool {
             return \add_filter( $this->name, $callback, $this->priority, $count );

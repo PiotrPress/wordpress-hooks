@@ -2,6 +2,8 @@
 
 This library uses [PHP Attributes](https://www.php.net/manual/en/language.attributes.overview.php) (introduced in PHP version `8.0`) to automagically add/remove [WordPress Hooks](https://developer.wordpress.org/plugins/hooks/) ([Filters](https://codex.wordpress.org/Plugin_API/Filter_Reference) and [Actions](https://codex.wordpress.org/Plugin_API/Action_Reference)) to/from functions and methods.
 
+**Note:** The library supports PHP >= `7.4` version.
+
 ## Installation
 
 ```console
@@ -19,15 +21,15 @@ require __DIR__ . '/vendor/autoload.php';
 ### Attributes
 
 ```php
-#[ Action( string $hook_name, int $priority = 10 ) ]
-#[ Filter( string $hook_name, int $priority = 10 ) ]
+#[ Action( string $name, int $priority = 10 ) ]
+#[ Filter( string $name, int $priority = 10 ) ]
 ```
 
 ### Functions
 
 ```php
-Hooks::add( object $object = null, string $callback = '', PiotrPress\CacheInterface $cache = null ) : void
-Hooks::remove( object $object = null, string $callback = '', PiotrPress\CacheInterface $cache = null ) : void
+Hooks::add( object $object = null, string $callback = '', PiotrPress\CacherInterface $cache = null ) : void
+Hooks::remove( object $object = null, string $callback = '', PiotrPress\CacherInterface $cache = null ) : void
 ```
 
 ## Examples
@@ -160,7 +162,7 @@ remove_filter( 'the_title', 'example_the_title', 1, 2 );
 
 ## Cache
 
-Optionally, you can pass a cache object, which must implement [PiotrPress\CacheInterface](https://github.com/PiotrPress/cacher/blob/master/src/CacheInterface.php) interface, as a third `cache` argument to `Hooks::add/remove()` methods.
+Optionally, you can pass a cache object, which must implement [PiotrPress\CacherInterface](https://github.com/PiotrPress/cacher/blob/master/src/CacherInterface.php) interface, as a third `cache` argument to `Hooks::add/remove()` methods.
 
 This will cache the result of `Hooks::get()` method, which provides a list of hooks for a given object, method or function using [Reflection API](https://www.php.net/manual/en/book.reflection.php), so caching its result can significantly improve the performance.
 
@@ -204,9 +206,13 @@ Inspirations, feedback, ideas and feature requests provided by:
 - [Dominik Kawula](https://github.com/domkawula)
 - [Jacek Sławiński](https://github.com/jacekslawinski)
 
+## Troubleshooting
+
+**Note:** Named arguments not working in PHP < `8.0` version.
+
 ## Requirements
 
-PHP >= `8.0` version.
+PHP >= `7.4` version.
 
 ## License
 
