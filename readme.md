@@ -28,8 +28,8 @@ require __DIR__ . '/vendor/autoload.php';
 ### Functions
 
 ```php
-Hooks::add( object $object = null, string $callback = '', PiotrPress\CacherInterface $cache = null ) : void
-Hooks::remove( object $object = null, string $callback = '', PiotrPress\CacherInterface $cache = null ) : void
+Hooks::add( ?object $object = null, string $callback = '', ?PiotrPress\CacherInterface $cache = null ) : void
+Hooks::remove( ?object $object = null, string $callback = '', ?PiotrPress\CacherInterface $cache = null ) : void
 ```
 
 ## Examples

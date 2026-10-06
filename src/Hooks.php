@@ -12,15 +12,15 @@ if( ! \class_exists( __NAMESPACE__ . '\Hooks' ) ) {
     class Hooks {
         protected static ?CacherInterface $cache = null;
 
-        public static function add( object $object = null, string $callback = '', CacherInterface $cache = null ) : void {
+        public static function add( ?object $object = null, string $callback = '', ?CacherInterface $cache = null ) : void {
             self::call( 'add', $object, $callback, $cache );
         }
 
-        public static function remove( object $object = null, string $callback = '', CacherInterface $cache = null ) : void {
+        public static function remove( ?object $object = null, string $callback = '', ?CacherInterface $cache = null ) : void {
             self::call( 'remove', $object, $callback, $cache );
         }
 
-        protected static function call( string $method, object $object = null, string $callback = '', CacherInterface $cache = null ) : void {
+        protected static function call( string $method, ?object $object = null, string $callback = '', ?CacherInterface $cache = null ) : void {
             if( ! $object and ! $callback ) return;
 
             self::$cache ??= new Cacher( 'php://memory' );
@@ -30,7 +30,7 @@ if( ! \class_exists( __NAMESPACE__ . '\Hooks' ) ) {
             as $hook ) ( new Hook( $hook[ 'name' ], $hook[ 'priority' ] ) )->$method( $object ? [ $object, $hook[ 'callback' ] ] : $hook[ 'callback' ], $hook[ 'count' ] );
         }
 
-        public static function get( object $object = null, string $callback = '' ) : array {
+        public static function get( ?object $object = null, string $callback = '' ) : array {
             if( ! $object and ! $callback ) return [];
 
             try {
